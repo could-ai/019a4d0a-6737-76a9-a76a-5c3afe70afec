@@ -66,7 +66,7 @@ class _VideoEditorScreenState extends State<VideoEditorScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                icon: Icon(_controller?.value.isPlaying ?? false ? Icons.pause : Icons.play),
+                icon: Icon(_controller?.value.isPlaying ?? false ? Icons.pause : Icons.play_arrow),
                 onPressed: () {
                   setState(() {
                     _controller?.value.isPlaying ?? false ? _controller?.pause() : _controller?.play();
@@ -124,20 +124,23 @@ class _VideoEditorScreenState extends State<VideoEditorScreen> {
                     onChanged: (value) => setState(() => _addLogo = value),
                   ),
                   const Text('Nhãn dán (Stickers)'),
-                  StaggeredGridView.countBuilder(
+                  StaggeredGrid.count(
                     shrinkWrap: true,
                     crossAxisCount: 4,
-                    itemCount: _stickers.length,
-                    itemBuilder: (context, index) => GestureDetector(
-                      onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Đã thêm sticker: ${_stickers[index]}')),
-                      ),
-                      child: Container(
-                        color: Colors.grey[200],
-                        child: Center(child: Text(_stickers[index], style: const TextStyle(fontSize: 24))),
-                      ),
-                    ),
-                    staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
+                    children: _stickers.map((sticker) {
+                      return StaggeredGridTile.fit(
+                        crossAxisCellCount: 1,
+                        child: GestureDetector(
+                          onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Đã thêm sticker: $sticker')),
+                          ),
+                          child: Container(
+                            color: Colors.grey[200],
+                            child: Center(child: Text(sticker, style: const TextStyle(fontSize: 24))),
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton.icon(

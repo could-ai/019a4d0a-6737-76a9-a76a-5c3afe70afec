@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
         final imagePath = '${directory.path}/text_image.png';
         
         // Tạo hình ảnh từ text sử dụng FFmpeg
-        final textCommand = '-f lavfi -i color=c=blue:s=1280x720:d=1 -vf "drawtext=text=\'${_textInput.replaceAll("'", "\\''")}\':fontcolor=white:fontsize=50:x=(w-text_w)/2:y=(h-text_h)/2:font=Arial" -frames:v 1 $imagePath';
+        final textCommand = '-f lavfi -i color=c=blue:s=1280x720:d=1 -vf "drawtext=text=\'${_textInput.replaceAll("'", "\\''")}\' :fontcolor=white:fontsize=50:x=(w-text_w)/2:y=(h-text_h)/2:font=Arial" -frames:v 1 $imagePath';
         await FFmpegKit.execute(textCommand);
         
         // Tạo video từ hình ảnh với thời lượng chỉ định

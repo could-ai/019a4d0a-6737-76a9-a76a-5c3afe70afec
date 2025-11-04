@@ -34,9 +34,10 @@ class _VideoEditorScreenState extends State<VideoEditorScreen> {
         _controller = VideoPlayerController.file(File(_videoPath!))
           ..initialize().then((_) => setState(() {}));
       } else {
-        // Mock video nếu không có
-        _controller = VideoPlayerController.asset('assets/videos/sample.mp4')
-          ..initialize().then((_) => setState(() {}));
+        // Không có video, hiển thị thông báo thay vì mock
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Không tìm thấy video để chỉnh sửa')),
+        );
       }
     });
   }
@@ -54,7 +55,7 @@ class _VideoEditorScreenState extends State<VideoEditorScreen> {
       final directory = await getTemporaryDirectory();
       final outputPath = '${directory.path}/edited_${DateTime.now().millisecondsSinceEpoch}.mp4';
       
-      String vfFilters = [];
+      List<String> vfFilters = [];
       
       // Thêm phụ đề nếu có
       if (_showSubtitles) {
@@ -65,7 +66,6 @@ class _VideoEditorScreenState extends State<VideoEditorScreen> {
       
       // Thêm logo nếu có
       if (_addLogo) {
-        // Giả sử logo ở assets - trong thực tế cần copy ra file
         vfFilters.add('drawtext=text=\'Minh Hoàng\':fontcolor=white:fontsize=50:x=10:y=10');
       }
       
